@@ -1,0 +1,40 @@
+{
+    "appKeys": {
+        "KEY_BACKERS": 1,
+        "KEY_PLEDGED": 0
+    },
+    "capabilities": [
+        ""
+    ],
+    "companyName": "tom@tomprice.ca",
+    "longName": "Kickstarter",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "fonts/RNS-B.ttf",
+                "name": "FONT_RNS_30",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:.]",
+                "file": "fonts/RNS-B.ttf",
+                "name": "FONT_RNS_SUBSET_48",
+                "type": "font"
+            },
+            {
+                "file": "fonts/RNS-B.ttf",
+                "name": "FONT_RNS_20",
+                "type": "font"
+            }
+        ]
+    },
+    "sdkVersion": "2",
+    "shortName": "Kickstarter",
+    "uuid": "68340ef0-cea5-4b55-b31e-f32c27a4e1e4",
+    "versionCode": 1,
+    "versionLabel": "0.1",
+    "watchapp": {
+        "watchface": true
+    }
+}
