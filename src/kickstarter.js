@@ -1,3 +1,7 @@
+var locationOptions = {timeout: 15000, maximumAge: 60000},
+    configuration = window.localStorage.getItem('configuration') ? window.localStorage.getItem('configuration') : '%7B%22project%22%3A%22https%3A%2F%2Fwww.kickstarter.com%2Fprojects%2F597507018%2Fpebble-time-awesome-smartwatch-no-compromises%22%2C%22fontRNS%22%3Atrue%2C%22fontOCR%22%3Afalse%7D';
+
+
 var divRegx = function (id, dataAttr, string) {
 	var idRegx = new RegExp('<div .*id="' + id + '">');
 	var attrRegx = new RegExp(dataAttr + '="[0-9\.]+"');
@@ -62,4 +66,15 @@ Pebble.addEventListener('appmessage',
 		console.log("AppMessage received!");
 		getKickstarter();
 	}                     
+);
+
+Pebble.addEventListener('showConfiguration', function(e) {
+  // Show config page
+  Pebble.openURL('https://dl.dropboxusercontent.com/u/29210594/config.html?'+ locationOptions);
+});
+
+Pebble.addEventListener('webviewclosed', function(e) {
+    var configuration = JSON.parse(decodeURIComponent(e.response));
+    console.log('Configuration window returned: ', JSON.stringify(configuration));
+  }
 );

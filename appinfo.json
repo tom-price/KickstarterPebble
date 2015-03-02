@@ -4,13 +4,29 @@
         "KEY_PLEDGED": 0
     },
     "capabilities": [
-        ""
+        "configurable"
     ],
     "companyName": "tom@tomprice.ca",
     "longName": "Kickstarter",
     "projectType": "native",
     "resources": {
         "media": [
+            {
+                "file": "fonts/OCR A Std Regular.ttf",
+                "name": "FONT_OCRA_25",
+                "type": "font"
+            },
+            {
+                "file": "fonts/OCR A Std Regular.ttf",
+                "name": "FONT_OCRA_30",
+                "type": "font"
+            },
+            {
+                "characterRegex": "[0-9:.]",
+                "file": "fonts/OCR A Std Regular.ttf",
+                "name": "FONT_OCRA_SUBSET_48",
+                "type": "font"
+            },
             {
                 "file": "fonts/RNS-B.ttf",
                 "name": "FONT_RNS_25",

@@ -4,7 +4,6 @@
 #define KEY_PLEDGED 0
 #define KEY_BACKERS 1
 
-
 static Window *s_main_window;
 static TextLayer *s_time_layer;
 static TextLayer *s_pledged_layer;
@@ -31,11 +30,12 @@ static void update_time() {
 	} else {
 		//Use 12 hour format
 		strftime(buffer, sizeof("00:00"), "%I:%M", tick_time);
+		if (buffer[0] == '0') {
+			memmove (buffer,buffer+1,strlen(buffer));
+		}
 	}
 	
-	if (buffer[0] == '0') {
-		memmove (buffer,buffer+1,strlen(buffer));
-	}
+
 
 	// Display this time on the TextLayer
 	text_layer_set_text(s_time_layer, buffer);
@@ -147,16 +147,16 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 			
 			#ifdef PBL_COLOR
 			if (deltaP/deltaT > 80) {
-				window_set_background_color(s_main_window, GColorFolly  );
-			} else if (deltaP/deltaT > 40) {
 				window_set_background_color(s_main_window, GColorSunsetOrange );
+			} else if (deltaP/deltaT > 40) {
+				window_set_background_color(s_main_window, GColorMelon );
 			} else if (deltaP/deltaT > 20) {
 				window_set_background_color(s_main_window, GColorRajah );
 			} else if (deltaP/deltaT > 10) {
-				window_set_background_color(s_main_window, GColorIcterine );
+				window_set_background_color(s_main_window, GColorPastelYellow );
 			} else if (deltaP/deltaT > 5) {
 				window_set_background_color(s_main_window, GColorMintGreen );
-			} else if (deltaP/deltaT > 3) {
+			} else if (deltaP/deltaT > 2.5) {
 				window_set_background_color(s_main_window, GColorCeleste );
 			} else {
 				window_set_background_color(s_main_window, GColorWhite );
