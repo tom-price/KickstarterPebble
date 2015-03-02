@@ -3,6 +3,8 @@
 
 #define KEY_PLEDGED 0
 #define KEY_BACKERS 1
+#define KEY_OCR 0
+#define KEY_RNS 0
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;

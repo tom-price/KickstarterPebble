@@ -1,7 +1,9 @@
 {
     "appKeys": {
         "KEY_BACKERS": 1,
-        "KEY_PLEDGED": 0
+        "KEY_OCR": 3,
+        "KEY_PLEDGED": 0,
+        "KEY_RNS": 4
     },
     "capabilities": [
         "configurable"
