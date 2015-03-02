@@ -4,6 +4,7 @@
 #define KEY_PLEDGED 0
 #define KEY_BACKERS 1
 
+
 static Window *s_main_window;
 static TextLayer *s_time_layer;
 static TextLayer *s_pledged_layer;
