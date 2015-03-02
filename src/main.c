@@ -104,42 +104,20 @@ static void main_window_unload(Window *window) {
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
+	update_time();
   
-  // Get Kickstarter Info update every 5 minutes
-  if(tick_time->tm_min % 5 == 0) {
-    // Begin dictionary
-    DictionaryIterator *iter;
-    app_message_outbox_begin(&iter);
+	// Get Kickstarter Info update every 5 minutes
+	if(tick_time->tm_min % 1 == 0) {
+		// Begin dictionary
+		DictionaryIterator *iter;
+		app_message_outbox_begin(&iter);
 
-    // Add a key-value pair
-    dict_write_uint8(iter, 0, 0);
+		// Add a key-value pair
+		dict_write_uint8(iter, 0, 0);
 
-    // Send the message!
-    app_message_outbox_send();
-  }
-}
-
-// This function written by Jeremy Thurgood https://github.com/jerith/pebble-beapoch
-time_t calc_unix_seconds(struct tm *tick_time) {
-    // This function is necessary because mktime() doesn't work (probably
-    // because there's no native timezone support) and just calling time()
-    // gives us no guarantee that the seconds haven't changed since tick_time
-    // was made.
-
-    int years_since_epoch;
-    int days_since_epoch;
-
-    // This uses a naive algorithm for calculating leap years and will
-    // therefore fail in 2100.
-    years_since_epoch = tick_time->tm_year - 70;
-    days_since_epoch = (years_since_epoch * 365 +
-                        (years_since_epoch + 1) / 4 +
-                        tick_time->tm_yday);
-    return (days_since_epoch * 86400 +
-            tick_time->tm_hour * 3600 +
-            tick_time->tm_min * 60 +
-            tick_time->tm_sec);
+		// Send the message!
+		app_message_outbox_send();
+	}
 }
 
 static void inbox_received_callback(DictionaryIterator *iterator, void *context) {
@@ -148,23 +126,23 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 	static char backers_buffer[16];
 	static char backers_layer_buffer[32];
 	float deltaP;
-	time_t temp = time(NULL); 
-	struct tm *tick_time = localtime(&temp);
-	
-	time_t unixTemp = calc_unix_seconds(tick_time);
-	time_t deltaT = unixTemp - s_checked_last;
-	s_checked_last = unixTemp;
+	time_t epochTemp = time(NULL);
+	time_t deltaT = epochTemp - s_checked_last;
+	int hundreds;
+	char * three_digits;
 
-  // Read first item
-  Tuple *t = dict_read_first(iterator);
+	// Read first item
+	Tuple *t = dict_read_first(iterator);
 
-  // For all items
+	// For all items
 	while(t != NULL) {
 		// Which key was received?
 		switch(t->key) {
 		case KEY_PLEDGED:
 			deltaP = t->value->int32 - s_raised_last;
-			APP_LOG(APP_LOG_LEVEL_ERROR, "DeltaP $%d, DeltaT %d, Ratio %lu", (int)deltaP, (int)deltaT, (int)deltaP/deltaT);
+			  
+			
+			APP_LOG(APP_LOG_LEVEL_INFO, "DeltaP $%d, DeltaT %d, Ratio %lu", (int)deltaP, (int)deltaT, (int)deltaP/deltaT);
 			
 			#ifdef PBL_COLOR
 			if (deltaP/deltaT > 80) {
@@ -193,7 +171,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 			} else { snprintf(pledged_buffer, sizeof(pledged_buffer), "$%d", (int)t->value->int32); }
 			break;
 		case KEY_BACKERS:
-			snprintf(backers_buffer, sizeof(backers_buffer), "%d,%d", (int)(t->value->int32/1000),(int)(t->value->int32%1000));
+			snprintf(backers_buffer, sizeof(backers_buffer), "%d,%03d", (int)(t->value->int32/1000),(int)(t->value->int32%1000));
 			break;
 		default:
 			APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);
@@ -203,6 +181,7 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 		// Look for next item
 		t = dict_read_next(iterator);
 	}
+	s_checked_last = epochTemp;
   
   // Assemble full string and display
 	text_layer_set_text(s_pledged_layer, pledged_buffer);
@@ -211,15 +190,15 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
 }
 
 static void inbox_dropped_callback(AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
+	APP_LOG(APP_LOG_LEVEL_ERROR, "Message dropped!");
 }
 
 static void outbox_failed_callback(DictionaryIterator *iterator, AppMessageResult reason, void *context) {
-  APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
+	APP_LOG(APP_LOG_LEVEL_ERROR, "Outbox send failed!");
 }
 
 static void outbox_sent_callback(DictionaryIterator *iterator, void *context) {
-  APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
+	APP_LOG(APP_LOG_LEVEL_INFO, "Outbox send success!");
 }
 
 static void init() {
@@ -264,3 +243,4 @@ int main(void) {
 	app_event_loop();
 	deinit();
 }
+ 
