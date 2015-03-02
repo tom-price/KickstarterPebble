@@ -13,7 +13,7 @@
         "media": [
             {
                 "file": "fonts/RNS-B.ttf",
-                "name": "FONT_RNS_30",
+                "name": "FONT_RNS_25",
                 "type": "font"
             },
             {
@@ -24,7 +24,7 @@
             },
             {
                 "file": "fonts/RNS-B.ttf",
-                "name": "FONT_RNS_20",
+                "name": "FONT_RNS_30",
                 "type": "font"
             }
         ]
