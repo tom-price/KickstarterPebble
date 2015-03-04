@@ -14,19 +14,19 @@
     "resources": {
         "media": [
             {
-                "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCRA_25",
-                "type": "font"
-            },
-            {
-                "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCRA_30",
-                "type": "font"
-            },
-            {
                 "characterRegex": "[0-9:.]",
                 "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCRA_SUBSET_48",
+                "name": "FONT_OCR_SUBSET_35",
+                "type": "font"
+            },
+            {
+                "file": "fonts/OCR A Std Regular.ttf",
+                "name": "FONT_OCR_25",
+                "type": "font"
+            },
+            {
+                "file": "fonts/OCR A Std Regular.ttf",
+                "name": "FONT_OCR_20",
                 "type": "font"
             },
             {
@@ -51,7 +51,7 @@
     "shortName": "Kickstarter",
     "uuid": "68340ef0-cea5-4b55-b31e-f32c27a4e1e4",
     "versionCode": 1,
-    "versionLabel": "0.1",
+    "versionLabel": "1.0",
     "watchapp": {
         "watchface": true
     }

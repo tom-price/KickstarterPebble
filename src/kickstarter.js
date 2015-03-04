@@ -1,11 +1,11 @@
 var configuration = localStorage.getItem('configValue') ? 
     localStorage.getItem('configValue') : 
-'%7B%22project%22%3A%22https%3A%2F%2Fwww.kickstarter.com%2Fprojects%2F597507018%2Fpebble-time-awesome-smartwatch-no-compromises%22%2C%22fontRNS%22%3Atrue%2C%22fontOCR%22%3Afalse%7D';
+'%7B"fontRNS"%3Atrue%2C"fontOCR"%3Afalse%2C"project"%3A"https%3A%2F%2Fwww.kickstarter.com%2Fprojects%2F597507018%2Fpebble-time-awesome-smartwatch-no-compromises"%7D';
 
 
 var divRegx = function (id, dataAttr, string) {
     var idRegx = new RegExp('<div .*id="' + id + '">');
-    var attrRegx = new RegExp(dataAttr + '="[0-9\.]+"');
+    var attrRegx = new RegExp(dataAttr + '="[0-9.]+"');
     return string.match(idRegx)[0].match(attrRegx)[0].match(/[0-9\.]+/g)[0];
 };
 
@@ -20,7 +20,10 @@ var xhrRequest = function (url, type, callback) {
 
 function getKickstarter() {
 
-    var url = "https://www.kickstarter.com/projects/597507018/pebble-time-awesome-smartwatch-no-compromises";
+    // Get saved url
+    console.log('Text', JSON.parse(decodeURIComponent(configuration)).project);
+    
+    var url = JSON.parse(decodeURIComponent(configuration)).project;
     xhrRequest(url, 'GET', 
         function(responseText) {
 
@@ -31,11 +34,15 @@ function getKickstarter() {
             // Conditions
             var backers = parseInt(divRegx("backers_count", "data-backers-count", responseText),10);     
             console.log("Backers are " + backers);
-
+            
+            var ocr = +JSON.parse(decodeURIComponent(configuration)).fontOCR;
+            var rns = +JSON.parse(decodeURIComponent(configuration)).fontRNS;
             // Assemble dictionary using our keys
             var dictionary = {
                 "KEY_PLEDGED": pledged,
-                "KEY_BACKERS": backers
+                "KEY_BACKERS": backers,
+                "KEY_OCR": ocr,
+                "KEY_RNS": rns
             };
 
             // Send to Pebble
@@ -70,18 +77,21 @@ Pebble.addEventListener('appmessage',
 );
 
 Pebble.addEventListener('showConfiguration', function(e) {
-  // Show config page
     console.log('  coded configuration: ', configuration);
     console.log('Decoded configuration: ', decodeURIComponent(configuration));
-    Pebble.openURL('https://dl.dropboxusercontent.com/u/29210594/config.html?' + configuration);
+    Pebble.openURL('http://tomprice.ca/pebbleConfig?' + configuration);
+
 });
 
 Pebble.addEventListener('webviewclosed', function(e) {
+    if (decodeURIComponent(e.response) == "") {
+        console.log("Empty response");
+    } else {
+    console.log('"' + e.response + '"');
     var options = decodeURIComponent(e.response);
     configuration = encodeURIComponent(options);
     localStorage.setItem('configValue', configuration);
-    
     console.log('Getfrom Local Storage', localStorage.setItem('configValue'));
-    
     getKickstarter();
+    }
 });
