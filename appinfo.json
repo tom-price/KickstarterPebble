@@ -9,7 +9,7 @@
         "configurable"
     ],
     "companyName": "tom@tomprice.ca",
-    "longName": "Kickstarter",
+    "longName": "Kickstarter Tracker",
     "projectType": "native",
     "resources": {
         "media": [
@@ -47,11 +47,15 @@
             }
         ]
     },
-    "sdkVersion": "2",
-    "shortName": "Kickstarter",
+    "sdkVersion": "3",
+    "shortName": "Tracker",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
     "uuid": "68340ef0-cea5-4b55-b31e-f32c27a4e1e4",
     "versionCode": 1,
-    "versionLabel": "1.0",
+    "versionLabel": "1.2",
     "watchapp": {
         "watchface": true
     }

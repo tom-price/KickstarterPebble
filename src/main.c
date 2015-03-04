@@ -118,7 +118,7 @@ static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
   update_time();
   
   // Get Kickstarter Info update every 5 minutes
-  if(tick_time->tm_min % 1 == 0) {
+  if(tick_time->tm_min % 5 == 0) {
     // Begin dictionary
     DictionaryIterator *iter;
     app_message_outbox_begin(&iter);
@@ -180,7 +180,11 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
       } else { snprintf(pledged_buffer, sizeof(pledged_buffer), "$%d", (int)t->value->int32); }
       break;
     case KEY_BACKERS:
-      snprintf(backers_buffer, sizeof(backers_buffer), "%d,%03d", (int)(t->value->int32/1000),(int)(t->value->int32%1000));
+        if (t->value->int32 >= 1000) {
+            snprintf(backers_buffer, sizeof(backers_buffer), "%d,%03d", (int)(t->value->int32/1000),(int)(t->value->int32%1000));
+        } else {
+            snprintf(backers_buffer, sizeof(backers_buffer), "%d", (int)(t->value->int32));
+        }
       break;
     case KEY_OCR:
             //Create GFont
