@@ -79,7 +79,7 @@ Pebble.addEventListener('appmessage',
 Pebble.addEventListener('showConfiguration', function(e) {
     console.log('  coded configuration: ', configuration);
     console.log('Decoded configuration: ', decodeURIComponent(configuration));
-    Pebble.openURL('http://tomprice.ca/pebbleConfig?' + configuration);
+    Pebble.openURL('http://www.tomprice.ca/pebbleConfig#' + configuration);
 
 });
 

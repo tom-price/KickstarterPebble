@@ -47,15 +47,11 @@
             }
         ]
     },
-    "sdkVersion": "3",
+    "sdkVersion": "2",
     "shortName": "Tracker",
-    "targetPlatforms": [
-        "aplite",
-        "basalt"
-    ],
     "uuid": "68340ef0-cea5-4b55-b31e-f32c27a4e1e4",
     "versionCode": 1,
-    "versionLabel": "1.2",
+    "versionLabel": "1.3",
     "watchapp": {
         "watchface": true
     }
