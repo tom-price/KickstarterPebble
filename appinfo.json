@@ -1,9 +1,10 @@
 {
     "appKeys": {
         "KEY_BACKERS": 1,
-        "KEY_OCR": 3,
         "KEY_PLEDGED": 0,
-        "KEY_RNS": 4
+        "STYLE_1": 3,
+        "STYLE_2": 4,
+        "STYLE_3": 5
     },
     "capabilities": [
         "configurable"
@@ -14,19 +15,19 @@
     "resources": {
         "media": [
             {
-                "characterRegex": "[0-9:.]",
-                "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCR_SUBSET_35",
+                "file": "fonts/HWT Artz.ttf",
+                "name": "FONT_HWT_30",
                 "type": "font"
             },
             {
-                "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCR_25",
+                "characterRegex": "[0-9:,]",
+                "file": "fonts/HWT Artz.ttf",
+                "name": "FONT_HWT_SUBSET_50",
                 "type": "font"
             },
             {
-                "file": "fonts/OCR A Std Regular.ttf",
-                "name": "FONT_OCR_20",
+                "file": "fonts/HWT Artz.ttf",
+                "name": "FONT_HWT_25",
                 "type": "font"
             },
             {
@@ -48,7 +49,7 @@
         ]
     },
     "sdkVersion": "2",
-    "shortName": "Tracker",
+    "shortName": "KickTracker",
     "uuid": "68340ef0-cea5-4b55-b31e-f32c27a4e1e4",
     "versionCode": 1,
     "versionLabel": "1.3",

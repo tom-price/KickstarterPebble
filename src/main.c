@@ -3,11 +3,12 @@
 
 #define KEY_PLEDGED 0
 #define KEY_BACKERS 1
-#define KEY_OCR 3
-#define KEY_RNS 4
-#define PERSIST_RAISED_LAST 5
-#define PERSIST_BACKERS_LAST 6
-#define PERSIST_CHECKED_LAST 7
+#define STYLE_1 3
+#define STYLE_2 4
+#define STYLE_3 5
+#define PERSIST_RAISED_LAST 50
+#define PERSIST_BACKERS_LAST 60
+#define PERSIST_CHECKED_LAST 70
 
 static Window *s_main_window;
 static TextLayer *s_time_layer;
@@ -17,9 +18,9 @@ static TextLayer *s_backers_layer;
 static GFont s_time_font_RNS;
 static GFont s_pledged_font_RNS;
 static GFont s_data_font_RNS;
-static GFont s_time_font_OCR;
-static GFont s_pledged_font_OCR;
-static GFont s_data_font_OCR;
+static GFont s_time_font_HWT;
+static GFont s_pledged_font_HWT;
+static GFont s_data_font_HWT;
 static int s_raised_last;
 static int s_backers_last;
 static time_t s_checked_last;
@@ -105,10 +106,10 @@ static void main_window_load(Window *window) {
   s_time_font_RNS = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_RNS_SUBSET_48));
   s_pledged_font_RNS = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_RNS_30));
   s_data_font_RNS = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_RNS_25));
-
-  s_time_font_OCR = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OCR_SUBSET_35));
-  s_pledged_font_OCR = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OCR_25));
-  s_data_font_OCR = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_OCR_20));
+    
+    s_time_font_HWT = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HWT_SUBSET_50));
+  s_pledged_font_HWT = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HWT_30));
+  s_data_font_HWT = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_HWT_25));
   
   //Apply to TextLayer
   text_layer_set_font(s_time_layer, s_time_font_RNS);
@@ -129,10 +130,11 @@ static void main_window_unload(Window *window) {
   fonts_unload_custom_font(s_time_font_RNS);
   fonts_unload_custom_font(s_pledged_font_RNS);
   fonts_unload_custom_font(s_data_font_RNS);
-
-  fonts_unload_custom_font(s_time_font_OCR);
-  fonts_unload_custom_font(s_pledged_font_OCR);
-  fonts_unload_custom_font(s_data_font_OCR);
+    
+    // Unload HWT fonts
+    fonts_unload_custom_font(s_time_font_HWT);
+  fonts_unload_custom_font(s_pledged_font_HWT);
+  fonts_unload_custom_font(s_data_font_HWT);
 
   // Destroy TextLayer
   text_layer_destroy(s_time_layer);
@@ -213,20 +215,24 @@ static void inbox_received_callback(DictionaryIterator *iterator, void *context)
             snprintf(backers_buffer, sizeof(backers_buffer), "%d", s_backers_last);
         }
       break;
-    case KEY_OCR:
-            //Create GFont
+    case STYLE_3:
       if ((int)t->value->int32) {
-          text_layer_set_font(s_time_layer, s_time_font_OCR);
-          text_layer_set_font(s_pledged_layer, s_pledged_font_OCR);
-          text_layer_set_font(s_backers_layer, s_data_font_OCR);
+          text_layer_set_font(s_time_layer, s_time_font_HWT);
+          text_layer_set_font(s_pledged_layer, s_pledged_font_HWT);
+          text_layer_set_font(s_backers_layer, s_data_font_HWT);
       }
       break;
-    case KEY_RNS:
+    case STYLE_2:
       if ((int)t->value->int32) {
           text_layer_set_font(s_time_layer, s_time_font_RNS);
           text_layer_set_font(s_pledged_layer, s_pledged_font_RNS);
           text_layer_set_font(s_backers_layer, s_data_font_RNS);
-}
+      }
+      break;
+    case STYLE_1:
+         if ((int)t->value->int32) {
+          APP_LOG(APP_LOG_LEVEL_ERROR, "STYLE_1 is no longer used / valid");
+         }
       break;
     default:
       APP_LOG(APP_LOG_LEVEL_ERROR, "Key %d not recognized!", (int)t->key);

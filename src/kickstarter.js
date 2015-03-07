@@ -1,6 +1,6 @@
-var configuration = localStorage.getItem('configValue') ? 
-    localStorage.getItem('configValue') : 
-'%7B"fontRNS"%3Atrue%2C"fontOCR"%3Afalse%2C"project"%3A"https%3A%2F%2Fwww.kickstarter.com%2Fprojects%2F597507018%2Fpebble-time-awesome-smartwatch-no-compromises"%7D';
+var configuration = localStorage.getItem('configValueV1.3') ? 
+    localStorage.getItem('configValueV1.3') : 
+'{"project":"https://www.kickstarter.com/projects/597507018/pebble-time-awesome-smartwatch-no-compromises","fontRNS":true,"fontHWT":false}';
 
 
 var divRegx = function (id, dataAttr, string) {
@@ -19,11 +19,10 @@ var xhrRequest = function (url, type, callback) {
 };
 
 function getKickstarter() {
-
-    // Get saved url
-    console.log('Text', JSON.parse(decodeURIComponent(configuration)).project);
+    // If it doesn't find a URL it uses the Default to prevent xhrRequest from breaking.
+    var url = JSON.parse(configuration).project ? JSON.parse(configuration).project : "https://www.kickstarter.com/projects/597507018/pebble-time-awesome-smartwatch-no-compromises";
+//     console.log(url);
     
-    var url = JSON.parse(decodeURIComponent(configuration)).project;
     xhrRequest(url, 'GET', 
         function(responseText) {
 
@@ -35,14 +34,15 @@ function getKickstarter() {
             var backers = parseInt(divRegx("backers_count", "data-backers-count", responseText),10);     
             console.log("Backers are " + backers);
             
-            var ocr = +JSON.parse(decodeURIComponent(configuration)).fontOCR;
-            var rns = +JSON.parse(decodeURIComponent(configuration)).fontRNS;
+            var style2 = +JSON.parse(configuration).fontRNS;
+            var style3 = +JSON.parse(configuration).fontHWT;
             // Assemble dictionary using our keys
             var dictionary = {
                 "KEY_PLEDGED": pledged,
                 "KEY_BACKERS": backers,
-                "KEY_OCR": ocr,
-                "KEY_RNS": rns
+                "STYLE_1": 0,
+                "STYLE_2": style2,
+                "STYLE_3": style3
             };
 
             // Send to Pebble
@@ -77,21 +77,17 @@ Pebble.addEventListener('appmessage',
 );
 
 Pebble.addEventListener('showConfiguration', function(e) {
-    console.log('  coded configuration: ', configuration);
-    console.log('Decoded configuration: ', decodeURIComponent(configuration));
-    Pebble.openURL('http://www.tomprice.ca/pebbleConfig#' + configuration);
-
+    console.log('Input Config: ' + '"' + configuration + '"');
+    Pebble.openURL('http://pebble.tomprice.ca/pebbleConfig?' + encodeURIComponent(configuration));
 });
 
 Pebble.addEventListener('webviewclosed', function(e) {
-    if (decodeURIComponent(e.response) == "") {
+    if (e.response == "") {
         console.log("Empty response");
     } else {
-    console.log('"' + e.response + '"');
-    var options = decodeURIComponent(e.response);
-    configuration = encodeURIComponent(options);
-    localStorage.setItem('configValue', configuration);
-    console.log('Getfrom Local Storage', localStorage.setItem('configValue'));
-    getKickstarter();
+        console.log('Outpt Config: ' + '"' + e.response + '"');
+        configuration = decodeURIComponent(e.response);
+        localStorage.setItem('configValueV1.3', configuration);
+        getKickstarter();
     }
 });
